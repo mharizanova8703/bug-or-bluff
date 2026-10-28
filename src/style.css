@@ -1,0 +1,111 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    background: #120a24;
+    color: #f5eeff;
+    font-family: 'Fredoka', system-ui, sans-serif;
+    -webkit-tap-highlight-color: transparent;
+  }
+  body {
+    min-height: 100dvh;
+    margin: 0;
+    background: radial-gradient(1200px 700px at 50% -10%, #2a1850 0%, #1e1035 45%, #120a24 100%) fixed;
+    overflow-x: hidden;
+  }
+  :focus-visible {
+    outline: 3px solid #7cff8a;
+    outline-offset: 3px;
+    border-radius: 8px;
+  }
+  h1, h2, h3 { text-wrap: balance; }
+  [tabindex='-1']:focus { outline: none; }
+}
+
+@layer components {
+  .card {
+    @apply rounded-3xl border border-grape/30 bg-dusk/90 p-5 backdrop-blur sm:p-7;
+    box-shadow: 0 0 0 1px rgba(168, 85, 247, 0.12), 0 12px 40px rgba(0, 0, 0, 0.35);
+  }
+  .btn {
+    @apply inline-flex min-h-[48px] select-none items-center justify-center gap-2 rounded-2xl px-6 py-3 text-lg font-semibold
+      transition duration-150 active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  /* dark text on bright fills keeps contrast above 4.5:1 */
+  .btn-primary { @apply bg-pumpkin text-midnight shadow-glow-orange hover:brightness-110; }
+  .btn-purple { @apply bg-grape text-midnight shadow-glow-purple hover:brightness-110; }
+  .btn-green { @apply bg-slime text-midnight shadow-glow-green hover:brightness-110; }
+  .btn-ghost { @apply border-2 border-grape/60 bg-transparent text-mist hover:bg-grape/20; }
+  .input {
+    @apply min-h-[52px] w-full rounded-2xl border-2 border-grape/50 bg-midnight px-4 py-3 text-lg text-mist
+      placeholder:text-mist-dim/70 focus:border-slime;
+  }
+  .label { @apply mb-2 block text-base font-medium text-mist; }
+  .glow-text { text-shadow: 0 0 18px rgba(168, 85, 247, 0.9), 0 0 40px rgba(255, 79, 195, 0.5); }
+  .chip { @apply inline-flex items-center gap-1.5 rounded-full border border-grape/40 bg-midnight/70 px-3 py-1 text-sm font-medium; }
+}
+
+/* ------------------------------------------------------------ code snippets */
+.code-block {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: clamp(0.85rem, 2.4vw, 1.1rem);
+  line-height: 1.6;
+  background: #0b0618;
+  border: 1px solid rgba(168, 85, 247, 0.4);
+  border-radius: 16px;
+  padding: 1rem 1.25rem;
+  overflow-x: auto;
+  color: #e9defa;
+  white-space: pre;
+  tab-size: 2;
+}
+.hljs-keyword, .hljs-selector-tag, .hljs-built_in, .hljs-literal { color: #ff79d2; }
+.hljs-string, .hljs-attr, .hljs-template-variable { color: #7cff8a; }
+.hljs-number, .hljs-selector-class, .hljs-selector-id, .hljs-attribute { color: #ffb066; }
+.hljs-title, .hljs-name, .hljs-tag, .hljs-function { color: #c9a0ff; }
+.hljs-comment { color: #a898c8; font-style: italic; }
+.hljs-variable, .hljs-property { color: #8fd8ff; }
+
+/* --------------------------------------------------------------- animations */
+@keyframes float-y { 0%, 100% { transform: translateY(0) } 50% { transform: translateY(-14px) } }
+@keyframes drift-x { from { transform: translateX(-12vw) } to { transform: translateX(112vw) } }
+@keyframes flap { 0%, 100% { transform: scaleY(1) } 50% { transform: scaleY(0.55) } }
+@keyframes twinkle { 0%, 100% { opacity: 0.25 } 50% { opacity: 1 } }
+@keyframes pulse-urgent { 0%, 100% { transform: scale(1) } 50% { transform: scale(1.18) } }
+@keyframes float-up {
+  0% { transform: translateY(0) scale(0.6); opacity: 0 }
+  12% { opacity: 1; transform: translateY(-8vh) scale(1.2) }
+  100% { transform: translateY(-85vh) scale(1); opacity: 0 }
+}
+@keyframes wobble { 0%, 100% { transform: rotate(-6deg) } 50% { transform: rotate(6deg) } }
+@keyframes shake { 0%, 100% { transform: translateX(0) } 25% { transform: translateX(-8px) } 75% { transform: translateX(8px) } }
+
+.anim-float { animation: float-y 4s ease-in-out infinite; }
+.anim-wobble { animation: wobble 2.4s ease-in-out infinite; }
+.anim-urgent { animation: pulse-urgent 0.5s ease-in-out infinite; }
+
+/* leaderboard / lobby list movement */
+.list-move, .list-enter-active, .list-leave-active { transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
+.list-enter-from { opacity: 0; transform: translateY(24px) scale(0.9); }
+.list-leave-to { opacity: 0; transform: scale(0.8); }
+.list-leave-active { position: absolute; }
+
+.pop-enter-active { transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.pop-leave-active { transition: all 0.2s ease; }
+.pop-enter-from, .pop-leave-to { opacity: 0; transform: scale(0.7); }
+
+.fade-enter-active, .fade-leave-active { transition: opacity 0.25s ease; }
+.fade-enter-from, .fade-leave-to { opacity: 0; }
+
+/* Honour the OS "reduce motion" setting: stop every decorative animation. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .list-move { transition: none !important; }
+}
