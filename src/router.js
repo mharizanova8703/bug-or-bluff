@@ -20,4 +20,7 @@ const router = createRouter({
 })
 
 router.afterEach((to) => {
-  document.title = titles[to.name] || titles
+  document.title = titles[to.name] || titles.home
+})
+
+export default router

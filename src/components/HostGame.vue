@@ -227,4 +227,8 @@ watch(
       <div class="flex justify-center">
         <button class="btn btn-green !px-10 !py-4 !text-2xl" :disabled="busy" @click="restart">
           <RotateCcw :size="26" aria-hidden="true" /> Start a new game
-        </
+        </button>
+      </div>
+    </div>
+  </div>
+</template>
